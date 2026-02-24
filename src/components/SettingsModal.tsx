@@ -12,16 +12,10 @@ interface SettingsModalProps {
   onClose: () => void;
 }
 
-const SENSITIVE_KEYS = new Set([
-  "gemini_api_key",
-  "tour_api_key",
-  "ncp_access_key",
-  "ncp_secret_key",
-]);
+const HIDDEN_GROUPS = new Set(["NCP Object Storage"]);
 
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [keys, setKeys] = useState<Record<string, string>>(getAllKeys);
-  const [visibleKeys, setVisibleKeys] = useState<Set<string>>(new Set());
   const [saved, setSaved] = useState(false);
 
   if (!isOpen) return null;
@@ -31,18 +25,6 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const handleChange = (key: string, value: string) => {
     setKeys((prev) => ({ ...prev, [key]: value }));
     setSaved(false);
-  };
-
-  const toggleVisibility = (key: string) => {
-    setVisibleKeys((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) {
-        next.delete(key);
-      } else {
-        next.add(key);
-      }
-      return next;
-    });
   };
 
   const handleSave = () => {
@@ -59,7 +41,6 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
   const handleClose = () => {
     setSaved(false);
-    setVisibleKeys(new Set());
     onClose();
   };
 
@@ -85,17 +66,16 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
         {/* Content */}
         <div className="flex-1 overflow-y-auto p-5 space-y-5">
-          <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs space-y-1">
+          <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs">
             <p>
               <span className="font-semibold">Gemini / Tour API</span> —
               브라우저에 저장되어 유지됩니다.
             </p>
-            <p>
-              <span className="font-semibold">NCP</span> — 새로고침 시 초기화됩니다.
-            </p>
           </div>
 
-          {Object.entries(grouped).map(([group, configs]) => {
+          {Object.entries(grouped)
+            .filter(([group]) => !HIDDEN_GROUPS.has(group))
+            .map(([group, configs]) => {
             const info = API_KEY_GROUP_INFO[group];
             return (
             <div key={group}>
@@ -123,36 +103,22 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 </div>
               )}
               <div className="space-y-2">
-                {configs.map((config) => {
-                  const isSensitive = SENSITIVE_KEYS.has(config.key);
-                  const isVisible = visibleKeys.has(config.key);
-                  return (
+                {configs.map((config) => (
                     <div key={config.key}>
                       <label className="block text-xs text-content-secondary mb-1">
                         {config.label}
                       </label>
-                      <div className="flex gap-2">
-                        <input
-                          type={isSensitive && !isVisible ? "password" : "text"}
-                          value={keys[config.key] || ""}
-                          onChange={(e) =>
-                            handleChange(config.key, e.target.value)
-                          }
-                          placeholder={config.placeholder}
-                          className="flex-1 p-2.5 text-sm border border-edge rounded-lg bg-input-bg text-content outline-none box-border"
-                        />
-                        {isSensitive && (
-                          <button
-                            onClick={() => toggleVisibility(config.key)}
-                            className="px-3 rounded-lg border border-edge bg-transparent text-content-secondary cursor-pointer text-xs shrink-0"
-                          >
-                            {isVisible ? "숨김" : "보기"}
-                          </button>
-                        )}
-                      </div>
+                      <input
+                        type="password"
+                        value={keys[config.key] || ""}
+                        onChange={(e) =>
+                          handleChange(config.key, e.target.value)
+                        }
+                        placeholder={config.placeholder}
+                        className="w-full p-2.5 text-sm border border-edge rounded-lg bg-input-bg text-content outline-none box-border"
+                      />
                     </div>
-                  );
-                })}
+                ))}
               </div>
             </div>
           );
