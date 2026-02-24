@@ -51,14 +51,14 @@ function generateObjectKey(fileName?: string): string {
 
   if (fileName) {
     const sanitized = fileName.replace(/[^a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ_\-]/g, "_");
-    return `${NCP_BUCKET_PREFIX}/${sanitized}_${timestamp}.jpg`;
+    return `${NCP_BUCKET_PREFIX}/${sanitized}_${timestamp}.webp`;
   }
 
   const randomBytes = crypto.getRandomValues(new Uint8Array(4));
   const randomId = Array.from(randomBytes, (b) =>
     b.toString(16).padStart(2, "0"),
   ).join("");
-  return `${NCP_BUCKET_PREFIX}/${timestamp}_${randomId}.jpg`;
+  return `${NCP_BUCKET_PREFIX}/${timestamp}_${randomId}.webp`;
 }
 
 export function isStorageConfigured(): boolean {

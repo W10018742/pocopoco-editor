@@ -137,7 +137,7 @@ export default function ImageEditor({
                 fileName: trimmedName,
               });
             },
-            "image/jpeg",
+            "image/webp",
             0.92,
           );
         });
@@ -156,7 +156,7 @@ export default function ImageEditor({
               fileName: trimmedName,
             });
           },
-          "image/jpeg",
+          "image/webp",
           0.92,
         );
       });
@@ -397,7 +397,7 @@ export default function ImageEditor({
                   fileName.trim() ? "border-edge" : "border-red-500/50"
                 }`}
               />
-              <span className="text-content-secondary text-sm shrink-0">.jpg</span>
+              <span className="text-content-secondary text-sm shrink-0">.webp</span>
             </div>
           </div>
         </div>
