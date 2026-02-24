@@ -229,7 +229,6 @@ export function useDragDrop({
     newGroups.push({
       id: generateId(),
       columns: [{ id: generateId(), items: [imageData], widthRatio: 1 }],
-      flex: 1,
     });
 
     setRowGroups(newGroups);
