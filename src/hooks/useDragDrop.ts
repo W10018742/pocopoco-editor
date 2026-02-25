@@ -67,7 +67,7 @@ export function useDragDrop({
       draggedImage.fromPool ||
       draggedImage.sourceGroup === undefined
     )
-      return groups;
+      return JSON.parse(JSON.stringify(groups));
 
     let newGroups: RowGroup[] = JSON.parse(JSON.stringify(groups));
     const srcGroup = newGroups[draggedImage.sourceGroup];

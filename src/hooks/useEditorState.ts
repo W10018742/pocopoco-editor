@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import type {
   DraggedImage,
   DropTarget,
@@ -9,9 +9,36 @@ import type {
 } from "../types";
 import { generateId } from "../utils";
 import type { TourApplyData } from "../components/TourSearchPanel";
+import { useHistory } from "./useHistory";
 
 export function useEditorState() {
-  const [rowGroups, setRowGroups] = useState<RowGroup[]>([]);
+  const [rowGroups, setRowGroupsRaw] = useState<RowGroup[]>([]);
+  const rowGroupsRef = useRef<RowGroup[]>(rowGroups);
+  rowGroupsRef.current = rowGroups;
+
+  const history = useHistory<RowGroup[]>();
+
+  const setRowGroups = useCallback(
+    (groups: RowGroup[]) => {
+      history.pushState(rowGroupsRef.current);
+      setRowGroupsRaw(groups);
+    },
+    [history],
+  );
+
+  const undo = useCallback(() => {
+    const previous = history.undo(rowGroupsRef.current);
+    if (previous !== null) {
+      setRowGroupsRaw(previous);
+    }
+  }, [history]);
+
+  const redo = useCallback(() => {
+    const next = history.redo(rowGroupsRef.current);
+    if (next !== null) {
+      setRowGroupsRaw(next);
+    }
+  }, [history]);
   const [leftWidth, setLeftWidth] = useState(60);
 
   const [title, setTitle] = useState("");
@@ -100,6 +127,10 @@ export function useEditorState() {
     isTourLoading,
     setIsTourLoading,
     fileInputRef,
+    undo,
+    redo,
+    canUndo: history.canUndo,
+    canRedo: history.canRedo,
   };
 }
 

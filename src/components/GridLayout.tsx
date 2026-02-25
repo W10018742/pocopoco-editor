@@ -41,6 +41,10 @@ interface GridLayoutProps {
     itemIndex: number,
     caption: string,
   ) => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: () => boolean;
+  canRedo: () => boolean;
 }
 
 function GridImage({ src }: { src: string }) {
@@ -78,6 +82,10 @@ export function GridLayout({
   onSelectItem,
   onDeleteItem,
   onUpdateCaption,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
 }: GridLayoutProps) {
   return (
     <div
@@ -88,9 +96,27 @@ export function GridLayout({
     >
       <div className="flex justify-between items-center px-4 py-2.5 bg-surface-secondary border-b border-edge text-[0.9rem]">
         <span>🖼️ 이미지 레이아웃</span>
-        <span className="text-[0.65rem] text-content-secondary">
-          선택 후 가로/세로 비율 조절
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-[0.65rem] text-content-secondary">
+            선택 후 가로/세로 비율 조절
+          </span>
+          <button
+            onClick={onUndo}
+            disabled={!canUndo()}
+            className="px-1.5 py-0.5 rounded border border-edge bg-transparent text-content-secondary cursor-pointer text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+            title="실행 취소 (Ctrl+Z)"
+          >
+            ↩
+          </button>
+          <button
+            onClick={onRedo}
+            disabled={!canRedo()}
+            className="px-1.5 py-0.5 rounded border border-edge bg-transparent text-content-secondary cursor-pointer text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+            title="다시 실행 (Ctrl+Shift+Z)"
+          >
+            ↪
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 w-full p-4 overflow-auto box-border">

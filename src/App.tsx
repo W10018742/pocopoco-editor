@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import sampleData from "./assets/DT_EX0001.json";
 import { ContentPanel } from "./components/ContentPanel";
 import { EditorFooter } from "./components/EditorFooter";
@@ -98,6 +98,24 @@ function App() {
     setShowSearchPanel: state.setShowSearchPanel,
     setIsTourLoading: state.setIsTourLoading,
   });
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "z" && !e.shiftKey) {
+        e.preventDefault();
+        state.undo();
+      }
+      if (
+        (e.ctrlKey || e.metaKey) &&
+        ((e.key === "z" && e.shiftKey) || e.key === "y")
+      ) {
+        e.preventDefault();
+        state.redo();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [state.undo, state.redo]);
 
   if (!unlocked) {
     return <KeyGate onUnlock={() => setUnlocked(true)} />;
@@ -233,6 +251,10 @@ function App() {
             onSelectItem={state.setSelectedItem}
             onDeleteItem={gridOps.deleteItem}
             onUpdateCaption={gridOps.updateCaption}
+            onUndo={state.undo}
+            onRedo={state.redo}
+            canUndo={state.canUndo}
+            canRedo={state.canRedo}
           />
 
           <div className="w-1 bg-edge" />
