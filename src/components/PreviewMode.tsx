@@ -82,7 +82,7 @@ export default function PreviewMode({
           </header>
 
           {/* 메인 콘텐츠 */}
-          <main className="relative z-10 flex-1 px-10 py-8 overflow-y-auto text-black">
+          <main className="relative z-10 px-10 pb-8 flex-1 overflow-y-auto scrollbar-hide text-black">
             <div className="flex min-h-[800px]">
               {/* 이미지 영역 */}
               <div style={{ width: `${leftWidth}%` }} className="p-4">
@@ -112,7 +112,7 @@ export default function PreviewMode({
                               className="w-full h-full object-cover block"
                             />
                             {item.caption && (
-                              <div className="absolute bottom-0 left-0 right-0 px-4 py-3 font-semibold text-white text-2xl text-center bg-gradient-to-t from-black/70 via-black/30 to-transparent">
+                              <div className="absolute bottom-0 left-0 right-0 px-4 py-3 font-semibold text-white text-3xl text-center bg-gradient-to-t from-black/70 via-black/30 to-transparent">
                                 {item.caption}
                               </div>
                             )}
@@ -132,19 +132,19 @@ export default function PreviewMode({
                 {title && (
                   <div className="mb-6">
                     <div className="w-12 h-1 bg-gradient-to-r from-orange-400 to-amber-400 rounded-full mb-4" />
-                    <h1 className="m-0 text-5xl font-extrabold leading-tight tracking-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                    <h1 className="m-0 text-6xl font-extrabold leading-tight tracking-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                       {title}
                     </h1>
                   </div>
                 )}
                 {description && (
-                  <p className="m-0 mb-6 text-2xl leading-relaxed text-black/60 whitespace-pre-wrap">
+                  <p className="m-0 mb-6 text-3xl leading-relaxed text-black/60 whitespace-pre-wrap">
                     {description}
                   </p>
                 )}
                 {note && (
                   <div className="mt-2 pt-5 border-t border-dashed border-black/10">
-                    <p className="m-0 text-lg leading-7 text-black/35 italic">
+                    <p className="m-0 text-xl leading-7 text-black/35 italic">
                       {note}
                     </p>
                   </div>
@@ -155,8 +155,8 @@ export default function PreviewMode({
             {/* INFO 영역 */}
             {infoItems.length > 0 && (
               <div className="mx-4 mt-4 p-8 rounded-2xl bg-white/60 backdrop-blur-sm ring-1 ring-black/5 shadow-sm">
-                <h3 className="m-0 mb-8 text-3xl font-bold flex items-center gap-3">
-                  <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-400 text-white text-lg shadow-md">
+                <h3 className="m-0 mb-8 text-4xl font-bold flex items-center gap-3">
+                  <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-400 text-white text-xl shadow-md">
                     📋
                   </span>
                   <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
@@ -169,8 +169,8 @@ export default function PreviewMode({
                       key={item.id}
                       className={`flex flex-col gap-1 pb-5 ${idx < infoItems.length - 1 ? "border-b border-black/5" : ""}`}
                     >
-                      <div className="flex gap-5 text-2xl">
-                        <span className="w-28 shrink-0 text-black/35 font-semibold">
+                      <div className="flex gap-5 text-3xl">
+                        <span className="w-44 shrink-0 text-black/35 font-semibold">
                           {item.title}
                         </span>
                         <span className="text-black/70 font-medium">
@@ -178,7 +178,7 @@ export default function PreviewMode({
                         </span>
                       </div>
                       {item.note && (
-                        <div className="ml-[132px] text-lg text-black/25 mt-0.5">
+                        <div className="ml-49 text-xl text-black/25 mt-0.5">
                           {item.note}
                         </div>
                       )}
