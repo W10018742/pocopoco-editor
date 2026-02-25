@@ -132,7 +132,7 @@ export default function PreviewMode({
                 {title && (
                   <div className="mb-6">
                     <div className="w-12 h-1 bg-gradient-to-r from-orange-400 to-amber-400 rounded-full mb-4" />
-                    <h1 className="m-0 text-6xl font-extrabold leading-tight tracking-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                    <h1 className="m-0 text-5xl font-extrabold leading-tight tracking-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                       {title}
                     </h1>
                   </div>
