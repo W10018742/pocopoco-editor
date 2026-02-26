@@ -52,12 +52,14 @@ function App() {
     title: state.title,
     description: state.description,
     note: state.note,
+    status: state.status,
     leftWidth: state.leftWidth,
     infoItems: state.infoItems,
     rowGroups: state.rowGroups,
     setTitle: state.setTitle,
     setDescription: state.setDescription,
     setNote: state.setNote,
+    setStatus: state.setStatus,
     setLeftWidth: state.setLeftWidth,
     setInfoItems: state.setInfoItems,
     setRowGroups: state.setRowGroups,
@@ -264,9 +266,11 @@ function App() {
             title={state.title}
             description={state.description}
             note={state.note}
+            status={state.status}
             onTitleChange={state.setTitle}
             onDescriptionChange={state.setDescription}
             onNoteChange={state.setNote}
+            onStatusChange={state.setStatus}
           />
         </div>
 

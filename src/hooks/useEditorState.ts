@@ -44,6 +44,7 @@ export function useEditorState() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [note, setNote] = useState("");
+  const [status, setStatus] = useState("");
 
   const [infoItems, setInfoItems] = useState<InfoItem[]>([
     { id: generateId(), title: "관람 시간", content: "", note: "" },
@@ -88,6 +89,8 @@ export function useEditorState() {
     setDescription,
     note,
     setNote,
+    status,
+    setStatus,
     infoItems,
     setInfoItems,
     images,

@@ -13,12 +13,14 @@ interface UseJsonOperationsParams {
   title: string;
   description: string;
   note: string;
+  status: string;
   leftWidth: number;
   infoItems: InfoItem[];
   rowGroups: RowGroup[];
   setTitle: (v: string) => void;
   setDescription: (v: string) => void;
   setNote: (v: string) => void;
+  setStatus: (v: string) => void;
   setLeftWidth: (v: number) => void;
   setInfoItems: (items: InfoItem[]) => void;
   setRowGroups: (groups: RowGroup[]) => void;
@@ -33,12 +35,14 @@ export function useJsonOperations({
   title,
   description,
   note,
+  status,
   leftWidth,
   infoItems,
   rowGroups,
   setTitle,
   setDescription,
   setNote,
+  setStatus,
   setLeftWidth,
   setInfoItems,
   setRowGroups,
@@ -49,10 +53,11 @@ export function useJsonOperations({
   setJsonFileName,
 }: UseJsonOperationsParams) {
   const exportJson = () => {
-    const data = {
+    const data: Record<string, any> = {
       TITLE: title,
       DESCRIPTION: description,
       NOTE: note,
+      ...(status ? { STATUS: status } : {}),
       LAYOUT_SETTINGS: {
         LEFT_WIDTH: leftWidth,
       },
@@ -137,6 +142,7 @@ export function useJsonOperations({
       setTitle(data.TITLE || "");
       setDescription(data.DESCRIPTION || "");
       setNote(data.NOTE || "");
+      setStatus(data.STATUS || "");
 
       if (data.LAYOUT_SETTINGS?.LEFT_WIDTH) {
         setLeftWidth(data.LAYOUT_SETTINGS.LEFT_WIDTH);
