@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to NCP CDN
 
 on:
   push:
@@ -23,19 +23,17 @@ jobs:
       - name: Create .env file
         run: |
           echo "VITE_TOUR_API_KEY=${{ secrets.TOUR_API_KEY }}" > .env
-          echo "VITE_NCP_ACCESS_KEY=${{ secrets.NCP_ACCESS_KEY }}" >> .env
-          echo "VITE_NCP_SECRET_KEY=${{ secrets.NCP_SECRET_KEY }}" >> .env
-          echo "VITE_NCP_REGION=${{ secrets.NCP_REGION }}" >> .env
-          echo "VITE_NCP_ENDPOINT=${{ secrets.NCP_ENDPOINT }}" >> .env
-          echo "VITE_NCP_BUCKET_NAME=${{ secrets.NCP_BUCKET_NAME }}" >> .env
-          echo "VITE_NCP_BUCKET_PREFIX=${{ secrets.NCP_BUCKET_PREFIX }}" >> .env
           echo "VITE_GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> .env
 
       - name: Build
         run: yarn build
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+      - name: Deploy to NCP Object Storage
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.NCP_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.NCP_SECRET_KEY }}
+        run: |
+          aws s3 sync dist/ s3://${{ secrets.NCP_BUCKET_NAME }} \
+            --endpoint-url ${{ secrets.NCP_ENDPOINT }} \
+            --region ${{ secrets.NCP_REGION }} \
+            --delete
