@@ -1,10 +1,10 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getApiKey } from "./apiKeyManager";
 
-const NCP_REGION = "kr-standard";
-const NCP_ENDPOINT = "https://kr.object.ncloudstorage.com";
-const NCP_BUCKET_NAME = "smartallcontents";
-const NCP_BUCKET_PREFIX = "DEV/POCOPOCOTRIP/POCOIMAGE";
+const NCP_REGION = import.meta.env.VITE_NCP_REGION as string;
+const NCP_ENDPOINT = import.meta.env.VITE_NCP_ENDPOINT as string;
+const NCP_BUCKET_NAME = import.meta.env.VITE_NCP_BUCKET_NAME as string;
+const NCP_BUCKET_PREFIX = import.meta.env.VITE_NCP_BUCKET_PREFIX as string;
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB

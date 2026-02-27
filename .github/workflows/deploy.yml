@@ -1,11 +1,11 @@
-name: Deploy to NCP CDN
+name: Build
 
 on:
   push:
     branches: [main]
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,16 +24,18 @@ jobs:
         run: |
           echo "VITE_TOUR_API_KEY=${{ secrets.TOUR_API_KEY }}" > .env
           echo "VITE_GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> .env
+          echo "VITE_NCP_ACCESS_KEY=${{ secrets.NCP_ACCESS_KEY }}" >> .env
+          echo "VITE_NCP_SECRET_KEY=${{ secrets.NCP_SECRET_KEY }}" >> .env
+          echo "VITE_NCP_REGION=${{ secrets.NCP_REGION }}" >> .env
+          echo "VITE_NCP_ENDPOINT=${{ secrets.NCP_ENDPOINT }}" >> .env
+          echo "VITE_NCP_BUCKET_NAME=${{ secrets.BUCKET_NAME }}" >> .env
+          echo "VITE_NCP_BUCKET_PREFIX=${{ secrets.BUCKET_PREFIX }}" >> .env
 
       - name: Build
         run: yarn build
 
-      - name: Deploy to NCP Object Storage
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.NCP_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.NCP_SECRET_KEY }}
-        run: |
-          aws s3 sync dist/ s3://${{ secrets.BUCKET_NAME }}/${{ secrets.BUCKET_PREFIX }} \
-            --endpoint-url ${{ secrets.NCP_ENDPOINT }} \
-            --region ${{ secrets.NCP_REGION }} \
-            --delete
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: ./dist
